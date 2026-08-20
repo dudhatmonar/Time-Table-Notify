@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSc (IT) Semester 3 - Custom Timetable</title>
+    <meta name="description"
+        content="Custom print-optimized timetable containing only selected subjects for MSc (IT) Sem 3.">
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            /* Colors */
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent: #4f46e5;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+
+            /* Timetable Subject Palette */
+            /* Green: Core Labs / Lectures */
+            --green-bg: #eafaf1;
+            --green-border: #a3e4d7;
+            --green-text: #117a65;
+            --green-muted: #16a085;
+
+            /* Red: Humanities / Mgmt / Influence */
+            --red-bg: #fdf2f2;
+            --red-border: #fde8e8;
+            --red-text: #9b1c1c;
+            --red-muted: #c81e1e;
+
+            /* Blue: Cloud / EDA */
+            --blue-bg: #ebf5fb;
+            --blue-border: #aed6f1;
+            --blue-text: #2471a3;
+            --blue-muted: #2980b9;
+
+            /* Table Spacing */
+            --cell-padding: 8px;
+        }
+
+        /* Dark Mode variables for browser view */
+        @media (prefers-color-scheme: dark) {
+            body.dark-mode {
+                --bg-page: #0f172a;
+                --bg-card: #1e293b;
+                --border-color: #334155;
+                --text-main: #f8fafc;
+                --text-muted: #94a3b8;
+                --accent: #818cf8;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Header Styling */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+
+        .title-area h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .title-area p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Actions */
+        .actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        button {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+            box-shadow: 0 2px 4px rgba(79, 70, 229, 0.25);
+        }
+
+        .btn-primary:hover {
+            background-color: #4338ca;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--border-color);
+        }
+
+        /* Legend Section */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding: 12px 16px;
+            background: var(--bg-page);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+        }
+
+        .legend-dot.green {
+            background-color: var(--green-bg);
+            border-color: var(--green-border);
+        }
+
+        .legend-dot.red {
+            background-color: var(--red-bg);
+            border-color: var(--red-border);
+        }
+
+        .legend-dot.blue {
+            background-color: var(--blue-bg);
+            border-color: var(--blue-border);
+        }
+
+        /* Timetable Grid Table */
+        .timetable-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            text-align: left;
+            font-size: 13px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            padding: 12px var(--cell-padding);
+            border-bottom: 2px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: var(--cell-padding);
+            border-bottom: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            vertical-align: top;
+            background-color: var(--bg-card);
+            height: 72px;
+            /* Fixed height for rows to look consistent */
+        }
+
+        td:last-child {
+            border-right: none;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .time-col {
+            width: 95px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            color: var(--text-muted);
+            background-color: var(--bg-page);
+            vertical-align: middle;
+            text-align: center;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        /* Course Cards */
+        .card {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            box-shadow: var(--shadow-sm);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card .subject-code {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            display: inline-block;
+            margin-bottom: 2px;
+            text-transform: uppercase;
+        }
+
+        .card .subject-name {
+            font-weight: 500;
+            font-size: 11px;
+            line-height: 1.3;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .card .subject-meta {
+            font-size: 10px;
+            font-weight: 600;
+            display: block;
+            margin-top: auto;
+        }
+
+        /* Subject Types Color Schemes */
+        .card.green {
+            background-color: var(--green-bg);
+            border-color: var(--green-border);
+        }
+
+        .card.green .subject-code,
+        .card.green .subject-name {
+            color: var(--green-text);
+        }
+
+        .card.green .subject-meta {
+            color: var(--green-muted);
+        }
+
+        .card.red {
+            background-color: var(--red-bg);
+            border-color: var(--red-border);
+        }
+
+        .card.red .subject-code,
+        .card.red .subject-name {
+            color: var(--red-text);
+        }
+
+        .card.red .subject-meta {
+            color: var(--red-muted);
+        }
+
+        .card.blue {
+            background-color: var(--blue-bg);
+            border-color: var(--blue-border);
+        }
+
+        .card.blue .subject-code,
+        .card.blue .subject-name {
+            color: var(--blue-text);
+        }
+
+        .card.blue .subject-meta {
+            color: var(--blue-muted);
+        }
+
+        /* Lunch Break Styling */
+        .lunch-break {
+            background-color: var(--bg-page);
+            text-align: center;
+            vertical-align: middle;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 12px;
+            height: 38px;
+            /* Compact height for lunch break */
+        }
+
+        /* Printing Setup */
+        @media print {
+            body {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 297mm;
+                height: 210mm;
+                display: block;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            @page {
+                size: A4 landscape;
+                margin: 8mm 10mm 8mm 10mm;
+            }
+
+            .container {
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                max-width: 100% !important;
+            }
+
+            header {
+                margin-bottom: 12px !important;
+                padding-bottom: 8px !important;
+            }
+
+            .title-area h1 {
+                font-size: 20px !important;
+                background: none !important;
+                -webkit-text-fill-color: initial !important;
+                color: #0f172a !important;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .legend {
+                margin-bottom: 12px !important;
+                padding: 8px 12px !important;
+            }
+
+            /* Adjust table for printable single A4 page */
+            table {
+                font-size: 11px !important;
+                border-radius: 6px !important;
+            }
+
+            th {
+                padding: 8px 6px !important;
+                font-size: 12px !important;
+            }
+
+            td {
+                height: 52px !important;
+                /* Shorter cells for print to ensure single page */
+                padding: 4px 5px !important;
+            }
+
+            .card {
+                padding: 6px 8px !important;
+                border-radius: 5px !important;
+                box-shadow: none !important;
+                border: 1px solid rgba(0, 0, 0, 0.08) !important;
+            }
+
+            .card .subject-code {
+                font-size: 10px !important;
+                margin-bottom: 1px !important;
+            }
+
+            .card .subject-name {
+                font-size: 9px !important;
+                margin-bottom: 2px !important;
+            }
+
+            .card .subject-meta {
+                font-size: 8px !important;
+            }
+
+            .lunch-break {
+                height: 28px !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="dark-mode">
+    <div class="container">
+        <header>
+            <div class="title-area">
+                <h1 id="main-title">MSc (IT) &middot; Semester 3 &middot; Timetable</h1>
+                <p>Custom Schedule &middot; 7 Subjects Selected &middot; Optimized for A4 Printing</p>
+            </div>
+            <div class="actions no-print">
+                <button id="theme-toggle" class="btn-secondary" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                    🌓 Mode
+                </button>
+                <button id="print-btn" class="btn-primary" onclick="window.print()" title="Print to A4 landscape PDF">
+                    🖨️ Print / Save PDF
+                </button>
+            </div>
+        </header>
+
+        <div class="legend no-print">
+            <div class="legend-item">
+                <span class="legend-dot green"></span>
+                <span>Green Subject (Core Lab/Lec)</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot red"></span>
+                <span>Red Subject (Humanities/Influence/Mgmt)</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot blue"></span>
+                <span>Blue Subject (Technical Elective/Cloud/EDA)</span>
+            </div>
+        </div>
+
+        <div class="timetable-wrapper">
+            <table id="timetable">
+                <thead>
+                    <tr>
+                        <th class="time-col">Time</th>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 08:00–08:50 -->
+                    <tr>
+                        <td class="time-col">08:00–08:50</td>
+                        <td>
+                            <div class="card red">
+                                <span class="subject-code">HM443 &middot; Lec</span>
+                                <span class="subject-name">Art of influence</span>
+                                <span class="subject-meta">CEP-205 &middot; SK1</span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <div class="card green">
+                                <span class="subject-code">IT643 &middot; Lec</span>
+                                <span class="subject-name">SW design & testing</span>
+                                <span class="subject-meta">CEP-209 &middot; AC</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- 09:00–11:00 -->
+                    <tr>
+                        <td class="time-col">09:00–11:00</td>
+                        <td>
+                            <div class="card green">
+                                <span class="subject-code">IT643 &middot; Lab</span>
+                                <span class="subject-name">SW design & testing</span>
+                                <span class="subject-meta">LAB004/005 &middot; AC</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card green">
+                                <span class="subject-code">IT644 &middot; Lab</span>
+                                <span class="subject-name">Web services & SOA</span>
+                                <span class="subject-meta">LAB004/005 &middot; JL</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card green">
+                                <span class="subject-code">IT645 &middot; Lab</span>
+                                <span class="subject-name">Web & mobile dev</span>
+                                <span class="subject-meta">LAB004/005 &middot; SB</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card blue">
+                                <span class="subject-code">IT627 &middot; Lab</span>
+                                <span class="subject-name">Cloud computing</span>
+                                <span class="subject-meta">LAB002 &middot; AM1</span>
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+
+                    <!-- 11:00–11:50 -->
+                    <tr>
+                        <td class="time-col">11:00–11:50</td>
+                        <td>
+                            <div class="card green">
+                                <span class="subject-code">IT645 &middot; Lec</span>
+                                <span class="subject-name">Web & mobile dev</span>
+                                <span class="subject-meta">CEP-209 &middot; SB</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card blue">
+                                <span class="subject-code">IT627 &middot; Lec</span>
+                                <span class="subject-name">Cloud computing</span>
+                                <span class="subject-meta">CEP-209 &middot; AM1</span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <div class="card red">
+                                <span class="subject-code">HM443 &middot; Lec</span>
+                                <span class="subject-name">Art of influence</span>
+                                <span class="subject-meta">CEP-205 &middot; SK1</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card red">
+                                <span class="subject-code">HM443 &middot; Lec</span>
+                                <span class="subject-name">Art of influence</span>
+                                <span class="subject-meta">CEP-205 &middot; SK1</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- 12:00–12:50 -->
+                    <tr>
+                        <td class="time-col">12:00–12:50</td>
+                        <td></td>
+                        <td>
+                            <div class="card green">
+                                <span class="subject-code">IT643 &middot; Lec</span>
+                                <span class="subject-name">SW design & testing</span>
+                                <span class="subject-meta">CEP-209 &middot; AC</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card green">
+                                <span class="subject-code">IT645 &middot; Lec</span>
+                                <span class="subject-name">Web & mobile dev</span>
+                                <span class="subject-meta">CEP-209 &middot; SB</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card green">
+                                <span class="subject-code">IT643 &middot; Lec</span>
+                                <span class="subject-name">SW design & testing</span>
+                                <span class="subject-meta">CEP-209 &middot; AC</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card green">
+                                <span class="subject-code">IT645 &middot; Lec</span>
+                                <span class="subject-name">Web & mobile dev</span>
+                                <span class="subject-meta">CEP-209 &middot; SB</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- 01:00–02:00 (Break) -->
+                    <tr>
+                        <td class="time-col">01:00–02:00</td>
+                        <td colspan="5" class="lunch-break">Lunch Break</td>
+                    </tr>
+
+                    <!-- 02:00–02:50 -->
+                    <tr>
+                        <td class="time-col">02:00–02:50</td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <div class="card blue">
+                                <span class="subject-code">IT462 &middot; Lec</span>
+                                <span class="subject-name">Exploratory data analysis</span>
+                                <span class="subject-meta">CEP-209 &middot; GP</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card green">
+                                <span class="subject-code">IT644 &middot; Lec</span>
+                                <span class="subject-name">Web services & SOA</span>
+                                <span class="subject-meta">CEP-209 &middot; JL</span>
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+
+                    <!-- 03:00–03:50 -->
+                    <tr>
+                        <td class="time-col">03:00–03:50</td>
+                        <td>
+                            <div class="card blue">
+                                <span class="subject-code">IT462 &middot; Lec</span>
+                                <span class="subject-name">Exploratory data analysis</span>
+                                <span class="subject-meta">CEP-209 &middot; GP</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card green">
+                                <span class="subject-code">IT644 &middot; Lec</span>
+                                <span class="subject-name">Web services & SOA</span>
+                                <span class="subject-meta">CEP-209 &middot; JL</span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <!-- 04:00–04:50 -->
+                    <tr>
+                        <td class="time-col">04:00–04:50</td>
+                        <td>
+                            <div class="card red">
+                                <span class="subject-code">HM409 &middot; Lec</span>
+                                <span class="subject-name">Mgmt skills</span>
+                                <span class="subject-meta">CEP-212 &middot; AT3</span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <div class="card red">
+                                <span class="subject-code">HM409 &middot; Lec</span>
+                                <span class="subject-name">Mgmt skills</span>
+                                <span class="subject-meta">CEP-212 &middot; AT3</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card blue">
+                                <span class="subject-code">IT462 &middot; Lec</span>
+                                <span class="subject-name">Exploratory data analysis</span>
+                                <span class="subject-meta">CEP-209 &middot; GP</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card green">
+                                <span class="subject-code">IT644 &middot; Lec</span>
+                                <span class="subject-name">Web services & SOA</span>
+                                <span class="subject-meta">CEP-209 &middot; JL</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- 05:00–05:50 -->
+                    <tr>
+                        <td class="time-col">05:00–05:50</td>
+                        <td>
+                            <div class="card blue">
+                                <span class="subject-code">IT627 &middot; Lec</span>
+                                <span class="subject-name">Cloud computing</span>
+                                <span class="subject-meta">CEP-209 &middot; AM1</span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <div class="card blue">
+                                <span class="subject-code">IT627 &middot; Lec</span>
+                                <span class="subject-name">Cloud computing</span>
+                                <span class="subject-meta">CEP-209 &middot; AM1</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- 05:00–07:00 -->
+                    <tr>
+                        <td class="time-col">05:00–07:00</td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <div class="card blue">
+                                <span class="subject-code">IT462 &middot; Lab</span>
+                                <span class="subject-name">Exploratory data analysis</span>
+                                <span class="subject-meta">CEP202 &middot; GP</span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+</body>
+
+</html>

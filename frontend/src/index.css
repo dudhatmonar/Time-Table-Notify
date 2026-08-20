@@ -1,0 +1,828 @@
+/* Custom Premium Glassmorphic Design System */
+
+:root {
+  /* Typography */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-title: 'Outfit', sans-serif;
+
+  /* Theme Tokens - Default Dark Mode */
+  --bg-page: #080c16;
+  --bg-card: rgba(17, 24, 39, 0.7);
+  --bg-card-hover: rgba(23, 33, 53, 0.8);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --accent: #6366f1;
+  --accent-hover: #4f46e5;
+  --accent-glow: rgba(99, 102, 241, 0.18);
+  --shadow-main: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --glass-blur: blur(12px);
+
+  /* Lecture Card Color Themes (Light Text on Translucent Neon Backgrounds) */
+  --green-bg: rgba(16, 185, 129, 0.12);
+  --green-border: rgba(16, 185, 129, 0.3);
+  --green-text: #34d399;
+  --green-glow: rgba(16, 185, 129, 0.1);
+
+  --blue-bg: rgba(59, 130, 246, 0.12);
+  --blue-border: rgba(59, 130, 246, 0.3);
+  --blue-text: #60a5fa;
+  --blue-glow: rgba(59, 130, 246, 0.1);
+
+  --red-bg: rgba(239, 68, 68, 0.12);
+  --red-border: rgba(239, 68, 68, 0.3);
+  --red-text: #f87171;
+  --red-glow: rgba(239, 68, 68, 0.1);
+
+  --purple-bg: rgba(168, 85, 247, 0.12);
+  --purple-border: rgba(168, 85, 247, 0.3);
+  --purple-text: #c084fc;
+  --purple-glow: rgba(168, 85, 247, 0.1);
+
+  --orange-bg: rgba(249, 115, 22, 0.12);
+  --orange-border: rgba(249, 115, 22, 0.3);
+  --orange-text: #fdbb2d;
+  --orange-glow: rgba(249, 115, 22, 0.1);
+}
+
+/* Light Mode Variables Override */
+body.light-theme {
+  --bg-page: #f1f5f9;
+  --bg-card: rgba(255, 255, 255, 0.8);
+  --bg-card-hover: rgba(255, 255, 255, 0.95);
+  --border-color: rgba(0, 0, 0, 0.08);
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --accent: #4f46e5;
+  --accent-hover: #3730a3;
+  --accent-glow: rgba(79, 70, 229, 0.12);
+  --shadow-main: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+
+  --green-bg: #eafaf1;
+  --green-border: #a3e4d7;
+  --green-text: #117a65;
+
+  --blue-bg: #ebf5fb;
+  --blue-border: #aed6f1;
+  --blue-text: #2471a3;
+
+  --red-bg: #fdf2f2;
+  --red-border: #fde8e8;
+  --red-text: #9b1c1c;
+
+  --purple-bg: #f5f3ff;
+  --purple-border: #ddd6fe;
+  --purple-text: #6d28d9;
+
+  --orange-bg: #fff7ed;
+  --orange-border: #ffedd5;
+  --orange-text: #c2410c;
+}
+
+/* Reset and Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  line-height: 1.6;
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-page);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Base Layout Structure */
+.app-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* Header Styling */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.brand-section h1 {
+  font-family: var(--font-title);
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-section p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Buttons */
+.btn {
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary {
+  background-color: var(--accent);
+  color: white;
+  box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px var(--accent-glow);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border-color: var(--border-color);
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.btn-secondary:hover {
+  background-color: var(--border-color);
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background-color: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+.btn-danger:hover {
+  background-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+/* Dashboard Layout Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Left Sidebar Controls */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Glassmorphic Panel Cards */
+.panel-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--shadow-main);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.panel-card h2 {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Today's Status Box */
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-dot.active {
+  background-color: #10b981;
+  box-shadow: 0 0 10px #10b981;
+  animation: pulse-green 1.5s infinite;
+}
+
+.status-dot.idle {
+  background-color: var(--text-muted);
+}
+
+.active-class-details {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.active-class-details h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.countdown-text {
+  font-family: var(--font-title);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-top: 8px;
+  display: block;
+}
+
+/* Switch styling for notification settings */
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.setting-info h4 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.setting-info p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: .3s;
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .3s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--accent);
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+/* Today's Agenda List */
+.agenda-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.agenda-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid var(--border-color);
+}
+
+.agenda-time {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+  width: 72px;
+  text-align: center;
+}
+
+.agenda-info {
+  flex-grow: 1;
+}
+
+.agenda-subject {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.agenda-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Main Timetable View */
+.timetable-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.timetable-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.view-selector {
+  display: flex;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.view-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.view-btn.active {
+  background: var(--accent);
+  color: white;
+}
+
+/* Grid Table Styles */
+.grid-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-main);
+  background: var(--bg-card);
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+}
+
+th {
+  font-family: var(--font-title);
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.02);
+  color: var(--text-main);
+  padding: 14px;
+  border-bottom: 2px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  font-size: 14px;
+}
+
+th:last-child {
+  border-right: none;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  vertical-align: top;
+  height: 96px;
+  background-color: transparent;
+}
+
+td:last-child {
+  border-right: none;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+.time-header-cell {
+  width: 100px;
+  text-align: center;
+  font-family: var(--font-title);
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.02);
+  vertical-align: middle;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* Timetable Lecture Cards */
+.lecture-card {
+  border-radius: 12px;
+  border: 1px solid transparent;
+  padding: 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.lecture-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card-header-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+
+.lecture-code {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.lecture-type-badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  text-transform: uppercase;
+}
+
+.lecture-name {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.3;
+  margin-bottom: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.lecture-meta {
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 4px;
+}
+
+/* Card Themes Integration */
+.lecture-card.green {
+  background-color: var(--green-bg);
+  border-color: var(--green-border);
+  color: var(--green-text);
+}
+.lecture-card.green:hover {
+  box-shadow: 0 8px 24px var(--green-glow);
+}
+
+.lecture-card.blue {
+  background-color: var(--blue-bg);
+  border-color: var(--blue-border);
+  color: var(--blue-text);
+}
+.lecture-card.blue:hover {
+  box-shadow: 0 8px 24px var(--blue-glow);
+}
+
+.lecture-card.red {
+  background-color: var(--red-bg);
+  border-color: var(--red-border);
+  color: var(--red-text);
+}
+.lecture-card.red:hover {
+  box-shadow: 0 8px 24px var(--red-glow);
+}
+
+.lecture-card.purple {
+  background-color: var(--purple-bg);
+  border-color: var(--purple-border);
+  color: var(--purple-text);
+}
+.lecture-card.purple:hover {
+  box-shadow: 0 8px 24px var(--purple-glow);
+}
+
+.lecture-card.orange {
+  background-color: var(--orange-bg);
+  border-color: var(--orange-border);
+  color: var(--orange-text);
+}
+.lecture-card.orange:hover {
+  box-shadow: 0 8px 24px var(--orange-glow);
+}
+
+/* Mobile List/Agenda View */
+.agenda-day-group {
+  margin-bottom: 20px;
+}
+
+.agenda-day-title {
+  font-family: var(--font-title);
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.agenda-day-title::after {
+  content: "";
+  flex-grow: 1;
+  height: 1px;
+  background: var(--border-color);
+}
+
+.mobile-cards-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.mobile-lecture-card {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Slide Drawer Modal for Edit / Create */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  background: var(--bg-page);
+  border-left: 1px solid var(--border-color);
+  padding: 28px;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  animation: slideInLeft 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.close-btn:hover {
+  color: var(--text-main);
+}
+
+/* Forms styling */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.form-control {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Color Palette Select */
+.color-picker {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.color-option {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s;
+}
+
+.color-option:hover {
+  transform: scale(1.1);
+}
+
+.color-option.selected {
+  border-color: var(--text-main);
+}
+
+.color-option.green { background-color: #10b981; }
+.color-option.blue { background-color: #3b82f6; }
+.color-option.red { background-color: #ef4444; }
+.color-option.purple { background-color: #a855f7; }
+.color-option.orange { background-color: #f97316; }
+
+.modal-actions {
+  margin-top: auto;
+  padding-top: 20px;
+  display: flex;
+  gap: 12px;
+}
+
+.modal-actions button {
+  flex: 1;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes pulse-green {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* Responsive / Mobile Breakpoints */
+@media (max-width: 960px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  /* Force Mobile Agenda View on small screens */
+  .grid-wrapper {
+    display: none;
+  }
+  
+  .view-selector {
+    display: none;
+  }
+}
